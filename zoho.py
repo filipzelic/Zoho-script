@@ -2,7 +2,7 @@ import os
 import shutil
 import sys
 
-def calculateFileSizes(sourcePath, destinationPath):
+def calculateFileSizes(sourcePath, destinationPath, maxSize):
 	size = 0.0
 	listOfFilesToMove = []
 	directoryName = 1
@@ -14,7 +14,7 @@ def calculateFileSizes(sourcePath, destinationPath):
 		listOfFilesToMove.append(filename)
 		size += float(os.path.getsize(sourcePath + filename)) / 1048576
 
-		if size > 200:
+		if size > maxSize:
 			printStatus("Moving files: ", numberOfFilesAlreadyMoved, numberOfFilesToMove)
 			destinationName = os.path.join(destinationPath + str(directoryName), '')
 			moveFilesToDirectory(sourcePath, listOfFilesToMove, destinationName)
@@ -44,12 +44,13 @@ def printStatus(text, value, total):
 	sys.stdout.flush()
 
 def main():
+	maxSize = int(raw_input("Enter maximum size (MB): "))
 	sourcePath = raw_input("Enter source path: ")
 	destinationPath = raw_input("Enter destination path: ")
 	sourcePath = os.path.join(sourcePath, '')
 	destinationPath = os.path.join(destinationPath, '')
 
-	calculateFileSizes(sourcePath, destinationPath)
+	calculateFileSizes(sourcePath, destinationPath, maxSize)
 
 if __name__ == '__main__':
 	main()
